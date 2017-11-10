@@ -1,6 +1,6 @@
 {
-  "name": "foursquare-mapper",
-  "homepage": "https://grantyang.github.io/foursquare-mapper",
+  "name": "proximap",
+  "homepage": "https://grantyang.github.io/proximap",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
