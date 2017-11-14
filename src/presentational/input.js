@@ -28,7 +28,7 @@ export default class Input extends Component {
           <input
             type="text"
             className="form-control col-sm-4"
-            placeholder="Enter text here"
+            placeholder="Enter keywords here"
             value={this.state.text} // grab value from state
             onChange={this.onInputChange} // update state on change
           />
