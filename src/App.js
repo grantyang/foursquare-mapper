@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import Input from './presentational/input.js';
 import GoogleMap from './presentational/google_map.js';
 
@@ -82,15 +81,8 @@ class App extends Component {
       <div className="container mt-2">
         <Input fxToRun={this.addNewKeyword} />
 
-        <div className="row justify-content-sm-center">
-          <GoogleMap
-            location={{ lat: 37.775, lng: -122.434}}
-            savedVenues={this.state.savedVenues}
-          />
-        </div>
-
-        <div className="row">
-          <div className="col-3">
+        <div className="row mt-2 justify-content-sm-center">
+          <div className="col-2">
             <div className="">Keywords:</div>
             {this.state.keywords.map(keyword => {
               return (
@@ -100,29 +92,30 @@ class App extends Component {
               );
             })}
           </div>
-
-          {this.state.loading && (
-            <span className="col-9">Fetching Data...</span>
-          )}
-          {!this.state.loading && (
-            <div className="col-9">
-              <div className="">Items:</div>
-
-              {this.state.items.map(item => {
-                return (
-                  <div className="" key={item.venue.id}>
-                    {item.venue.name} | {' '}
-                    {item.venue.categories[0] &&
-                      item.venue.categories[0].shortName}{' '}
-                    | {item.venue.rating} | {item.venue.stats.checkinsCount} |{' '}
-                    {item.venue.location.lat} | {item.venue.location.lng}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <GoogleMap 
+            location={{ lat: 37.775, lng: -122.434 }}
+            savedVenues={this.state.savedVenues}
+          />
         </div>
-        
+
+        {this.state.loading && <span className="col-9">Fetching Data...</span>}
+        {!this.state.loading && (
+          <div className="col-9">
+            <div className="">Items:</div>
+
+            {this.state.items.map(item => {
+              return (
+                <div className="" key={item.venue.id}>
+                  {item.venue.name} | {' '}
+                  {item.venue.categories[0] &&
+                    item.venue.categories[0].shortName}{' '}
+                  | {item.venue.rating} | {item.venue.stats.checkinsCount} |{' '}
+                  {item.venue.location.lat} | {item.venue.location.lng}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }

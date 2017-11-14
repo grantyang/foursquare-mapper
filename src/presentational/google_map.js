@@ -44,7 +44,7 @@ class GoogleMap extends Component {
     // this.refs.map is a direct reference to this element
     return (
       <div className="">
-        <div className="map" ref="map" />
+        <div className="map rounded" ref="map" />
       </div>
     );
   }
