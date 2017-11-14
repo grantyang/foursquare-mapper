@@ -12,7 +12,8 @@ class App extends Component {
       city: 'san francisco',
       section: '',
       limit: 5,
-      items: []
+      items: [],
+      keywords: []
     };
   }
 
@@ -53,37 +54,48 @@ class App extends Component {
 
   setSearchInput = searchInput => {
     this.setState({
-      query: searchInput
+      query: searchInput,
+      keywords: [searchInput, ...this.state.keywords]
     });
   };
 
   render() {
     return (
-      <div>
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Proximap</h1>
-          </header>
-        </div>
-        <div className="container mt-2">
-          <Input fxToRun={this.setSearchInput} />
-          {(this.state.loading && <span className="row justify-content-sm-center">Fetching Data...</span>)}
-          {(!this.state.loading && <div className="">
-            <div className="row justify-content-sm-center">Items:</div>
-            {this.state.items.map(item => {
+      <div className="container mt-2">
+        <Input fxToRun={this.setSearchInput} />
+
+        <div className="row">
+          <div className="col-6">
+            <div className="justify-content-sm-center">Keywords:</div>
+            {this.state.keywords.map(keyword => {
               return (
-                <div
-                  className="row justify-content-sm-center"
-                  key={item.venue.id}>
-                  {item.venue.name} //{' '}
-                  {item.venue.categories[0] &&
-                    item.venue.categories[0].shortName}{' '}
-                  // {item.venue.rating} // {item.venue.stats.checkinsCount}
+                <div className="" key={keyword}>
+                  {keyword}
                 </div>
               );
             })}
-          </div>)}
+          </div>
+
+          {this.state.loading && (
+            <span className="col-6 justify-content-sm-center">
+              Fetching Data...
+            </span>
+          )}
+          {!this.state.loading && (
+            <div className="col-6">
+              <div className="justify-content-sm-center">Items:</div>
+              {this.state.items.map(item => {
+                return (
+                  <div className="" key={item.venue.id}>
+                    {item.venue.name} //{' '}
+                    {item.venue.categories[0] &&
+                      item.venue.categories[0].shortName}{' '}
+                    // {item.venue.rating} // {item.venue.stats.checkinsCount}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     );
