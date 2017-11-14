@@ -11,7 +11,7 @@ class App extends Component {
       query: '',
       city: 'san francisco',
       section: '',
-      limit: 50,
+      limit: 10,
       items: [],
       keywords: [],
       savedVenues: {}
@@ -54,7 +54,7 @@ class App extends Component {
           venueDataToAdd[v.venue.id] = {
             name: v.venue.name,
             rating: v.venue.rating,
-            cat: (v.venue.categories[0] && v.venue.categories[0].shortName),
+            cat: v.venue.categories[0] && v.venue.categories[0].shortName,
             lat: v.venue.location.lat,
             lng: v.venue.location.lng,
             keyword: this.state.query
@@ -65,22 +65,29 @@ class App extends Component {
           loading: false,
           savedVenues: Object.assign({}, this.state.savedVenues, venueDataToAdd)
         });
-        console.log(this.state)
+        console.log(this.state);
       });
   };
 
-  setSearchInput = searchInput => {
-    if (searchInput === '') return alert('Please input value');
+  addNewKeyword = keywordInput => {
+    if (keywordInput === '') return alert('Please input value');
     this.setState({
-      query: searchInput,
-      keywords: [searchInput, ...this.state.keywords]
+      query: keywordInput,
+      keywords: [keywordInput, ...this.state.keywords]
     });
   };
 
   render() {
     return (
       <div className="container mt-2">
-        <Input fxToRun={this.setSearchInput} />
+        <Input fxToRun={this.addNewKeyword} />
+
+        <div className="row justify-content-sm-center">
+          <GoogleMap
+            location={{ lat: 37.775, lng: -122.434}}
+            savedVenues={this.state.savedVenues}
+          />
+        </div>
 
         <div className="row">
           <div className="col-3">
@@ -115,9 +122,7 @@ class App extends Component {
             </div>
           )}
         </div>
-        <div className="row justify-content-sm-center">
-          <GoogleMap location={{ lat: 37.77, lng: -122.4 }} />
-        </div>
+        
       </div>
     );
   }
