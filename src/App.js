@@ -8,9 +8,9 @@ class App extends Component {
     this.state = {
       loading: false,
       query: '',
-      city: 'san francisco',
+      city: 'taipei',
       section: '',
-      limit: 10,
+      limit: 20,
       items: [],
       keywords: [],
       savedVenues: {}
@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   componentDidUpdate(previousProps, previousState) {
-    if (previousState.query !== this.state.query) {
+    if (previousState.query !== this.state.query && this.state.query !== '') {
       //if the query has been changed since last update
       //(prevents infinite setState loop)
       this.getVenuesFromAPI();
@@ -76,6 +76,22 @@ class App extends Component {
     });
   };
 
+  removeKeyword = keywordToRemove => {
+    const savedVenues = this.state.savedVenues;
+    const newKeywords = this.state.keywords.filter(k => k !== keywordToRemove);
+
+    let res = Object.assign({}, savedVenues);
+    Object.keys(res).forEach(id => {
+      if (res[id].keyword === keywordToRemove) delete res[id];
+    });
+
+    this.setState({
+      keywords: newKeywords,
+      savedVenues: res,
+      query: ''
+    });
+  };
+
   render() {
     return (
       <div className="container mt-2">
@@ -86,14 +102,17 @@ class App extends Component {
             <div className="">Keywords:</div>
             {this.state.keywords.map(keyword => {
               return (
-                <div className="" key={keyword}>
+                <div
+                  className=""
+                  key={keyword}
+                  onClick={() => this.removeKeyword(keyword)}>
                   {keyword}
                 </div>
               );
             })}
           </div>
-          <GoogleMap 
-            location={{ lat: 37.775, lng: -122.434 }}
+          <GoogleMap
+            location={{ lat: 25.033, lng: 121.5654 }}
             savedVenues={this.state.savedVenues}
           />
         </div>
