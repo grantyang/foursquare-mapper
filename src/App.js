@@ -8,12 +8,13 @@ class App extends Component {
     this.state = {
       loading: false,
       query: '',
-      city: 'taipei',
       section: '',
       limit: 20,
       items: [],
       keywords: [],
-      savedVenues: {}
+      savedVenues: {},
+      latitude: 52.5200,
+      longitude: 13.4050
     };
   }
 
@@ -25,22 +26,16 @@ class App extends Component {
     }
   }
 
-  // addSearchInputToList = searchInput => {
-  //   //adds new todo item to this list
-  //   if (!searchInput) {
-  //     return alert('Please input a value');
-  //   } else {
-  //     console.log(searchInput);
-  //   }
-  // };
-
   getVenuesFromAPI = () => {
     this.setState({
       loading: true
     });
+    console.log(this.state.latitude)
+    console.log(this.state.longitude)
+    
     fetch(
       `http://localhost:5000/fsquare/explore?query=${this.state
-        .query}&near=${this.state.city}&limit=${this.state.limit}`,
+        .query}&near=berlin&limit=${this.state.limit}`,
       {
         method: 'GET'
       }
@@ -69,6 +64,7 @@ class App extends Component {
   };
 
   addNewKeyword = keywordInput => {
+    //saves a keyword to sidebar list of previous searches
     if (keywordInput === '') return alert('Please input value');
     this.setState({
       query: keywordInput,
@@ -77,9 +73,9 @@ class App extends Component {
   };
 
   removeKeyword = keywordToRemove => {
+    //when a keyword is clicked, remove it from previous searches an d
     const savedVenues = this.state.savedVenues;
     const newKeywords = this.state.keywords.filter(k => k !== keywordToRemove);
-
     let res = Object.assign({}, savedVenues);
     Object.keys(res).forEach(id => {
       if (res[id].keyword === keywordToRemove) delete res[id];
@@ -92,11 +88,19 @@ class App extends Component {
     });
   };
 
+  saveLocation = location => {
+    console.log('saving location')
+    this.setState({
+      latitude: location.lat(),
+      longitude: location.lng()
+    })
+  };
+
+
   render() {
     return (
       <div className="container mt-2">
         <Input fxToRun={this.addNewKeyword} />
-
         <div className="row mt-2 justify-content-sm-center">
           <div className="col-2">
             <div className="">Keywords:</div>
@@ -112,7 +116,8 @@ class App extends Component {
             })}
           </div>
           <GoogleMap
-            location={{ lat: 25.033, lng: 121.5654 }}
+            location={{ lat: this.state.latitude, lng: this.state.longitude }}
+            saveLocation={this.saveLocation}
             savedVenues={this.state.savedVenues}
           />
         </div>

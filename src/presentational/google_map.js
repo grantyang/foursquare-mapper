@@ -2,35 +2,44 @@ import React, { Component } from 'react';
 /*global google*/
 
 class GoogleMap extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      map: null,
+      heatmap: new google.maps.visualization.HeatmapLayer()
+    };
+  }
+
   componentDidMount() {
-    this.renderMap();
-  }
-
-  componentDidUpdate() {
-    this.renderMap();
-  }
-
-  renderMap = () => {
-    var map, heatmap;
-
-    map = new google.maps.Map(this.refs.map, {
+    let map = new google.maps.Map(this.refs.map, {
       zoom: 13,
       center: this.props.location,
       mapTypeId: 'roadmap'
     });
 
-    heatmap = new google.maps.visualization.HeatmapLayer({
-      data: this.getPoints(),
-      map: map
+    this.setState({
+      map
     });
-    heatmap.set('radius', 30);
-  };
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.heatmap === this.state.heatmap) {
+      this.state.heatmap.setMap(null);
+      let heatmap = new google.maps.visualization.HeatmapLayer({
+        data: this.getPoints()
+      });
+      heatmap.set('radius', 30);
+      heatmap.setMap(this.state.map);
+      this.setState({
+        heatmap
+      });
+    }
+  }
 
   // Heatmap data
   getPoints = () => {
     const savedVenues = this.props.savedVenues;
     if (savedVenues) {
-      console.log(savedVenues);
       return Object.keys(savedVenues).map(keyName => {
         return new google.maps.LatLng(
           savedVenues[keyName].lat,
