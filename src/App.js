@@ -9,12 +9,12 @@ class App extends Component {
       loading: false,
       query: '',
       section: '',
-      limit: 20,
+      limit: 50,
       items: [],
       keywords: [],
       savedVenues: {},
-      latitude: 52.5200,
-      longitude: 13.4050
+      latitude: 40.7128,
+      longitude: -74.0060
     };
   }
 
@@ -35,7 +35,7 @@ class App extends Component {
     
     fetch(
       `http://localhost:5000/fsquare/explore?query=${this.state
-        .query}&near=berlin&limit=${this.state.limit}`,
+        .query}&ll=${this.state.latitude},${this.state.longitude}&radius=10000&limit=${this.state.limit}`,
       {
         method: 'GET'
       }
@@ -98,6 +98,8 @@ class App extends Component {
 
 
   render() {
+    console.log('render, latitude is')
+    console.log(this.state.latitude)
     return (
       <div className="container mt-2">
         <Input fxToRun={this.addNewKeyword} />
