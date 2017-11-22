@@ -35,7 +35,7 @@ class App extends Component {
     
     fetch(
       `http://localhost:5000/fsquare/explore?query=${this.state
-        .query}&ll=${this.state.latitude},${this.state.longitude}&radius=10000&limit=${this.state.limit}`,
+        .query}&ll=${this.state.latitude},${this.state.longitude}&radius=20000&limit=${this.state.limit}`,
       {
         method: 'GET'
       }
@@ -89,10 +89,18 @@ class App extends Component {
   };
 
   saveLocation = location => {
-    console.log('saving location')
+    this.clearData();
     this.setState({
       latitude: location.lat(),
       longitude: location.lng()
+    })
+  };
+
+  clearData = () => {
+    this.setState({
+      query: '',
+      keywords: [],
+      savedVenues: []
     })
   };
 

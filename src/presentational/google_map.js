@@ -11,7 +11,7 @@ class GoogleMap extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.location)
+    console.log(this.props.location);
     let map = new google.maps.Map(this.refs.map, {
       zoom: 13,
       center: this.props.location,
@@ -19,7 +19,7 @@ class GoogleMap extends Component {
     });
 
     // Create the search box and link it to the UI element.
-    var input = document.getElementById('pac-input'); //GY THIS IS NULL IN WILLUPDATE
+    var input = document.getElementById('pac-input');
     console.log(input);
 
     var searchBox = new google.maps.places.SearchBox(input);
@@ -33,14 +33,15 @@ class GoogleMap extends Component {
       if (places.length === 0) {
         return;
       }
-      // For each place, get the icon, name and location.
+
       var bounds = new google.maps.LatLngBounds();
+
+      //send location to parent component to save
       saveLocation(places[0].geometry.location);
       if (!places[0].geometry) {
         console.log('Returned place contains no geometry');
         return;
       }
-      //send location to parent component to save
       if (places[0].geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(places[0].geometry.viewport);
