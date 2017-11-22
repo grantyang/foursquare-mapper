@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Input from './presentational/input.js';
 import GoogleMap from './presentational/google_map.js';
+import Sidebar from './presentational/sidebar.js';
 
 class App extends Component {
   constructor(props) {
@@ -13,8 +14,8 @@ class App extends Component {
       items: [],
       keywords: [],
       savedVenues: {},
-      latitude: 40.7128,
-      longitude: -74.0060
+      latitude: 25.033,
+      longitude: 121.5654
     };
   }
 
@@ -30,12 +31,11 @@ class App extends Component {
     this.setState({
       loading: true
     });
-    console.log(this.state.latitude)
-    console.log(this.state.longitude)
-    
+
     fetch(
-      `http://localhost:5000/fsquare/explore?query=${this.state
-        .query}&ll=${this.state.latitude},${this.state.longitude}&radius=20000&limit=${this.state.limit}`,
+      `http://localhost:5000/fsquare/explore?query=${this.state.query}&ll=${
+        this.state.latitude
+      },${this.state.longitude}&radius=20000&limit=${this.state.limit}`,
       {
         method: 'GET'
       }
@@ -59,7 +59,6 @@ class App extends Component {
           loading: false,
           savedVenues: Object.assign({}, this.state.savedVenues, venueDataToAdd)
         });
-        console.log(this.state);
       });
   };
 
@@ -73,7 +72,7 @@ class App extends Component {
   };
 
   removeKeyword = keywordToRemove => {
-    //when a keyword is clicked, remove it from previous searches an d
+    //when a keyword is clicked, remove it from keywords list and its results from the heatmap
     const savedVenues = this.state.savedVenues;
     const newKeywords = this.state.keywords.filter(k => k !== keywordToRemove);
     let res = Object.assign({}, savedVenues);
@@ -93,38 +92,26 @@ class App extends Component {
     this.setState({
       latitude: location.lat(),
       longitude: location.lng()
-    })
+    });
   };
 
   clearData = () => {
     this.setState({
       query: '',
       keywords: [],
-      savedVenues: []
-    })
+      savedVenues: {}
+    });
   };
 
-
   render() {
-    console.log('render, latitude is')
-    console.log(this.state.latitude)
     return (
       <div className="container mt-2">
         <Input fxToRun={this.addNewKeyword} />
         <div className="row mt-2 justify-content-sm-center">
-          <div className="col-2">
-            <div className="">Keywords:</div>
-            {this.state.keywords.map(keyword => {
-              return (
-                <div
-                  className=""
-                  key={keyword}
-                  onClick={() => this.removeKeyword(keyword)}>
-                  {keyword}
-                </div>
-              );
-            })}
-          </div>
+          <Sidebar
+            keywords={this.state.keywords}
+            removeKeyword={this.removeKeyword}
+          />
           <GoogleMap
             location={{ lat: this.state.latitude, lng: this.state.longitude }}
             saveLocation={this.saveLocation}
@@ -140,7 +127,7 @@ class App extends Component {
             {this.state.items.map(item => {
               return (
                 <div className="" key={item.venue.id}>
-                  {item.venue.name} | {' '}
+                  {item.venue.name} |{' '}
                   {item.venue.categories[0] &&
                     item.venue.categories[0].shortName}{' '}
                   | {item.venue.rating} | {item.venue.stats.checkinsCount} |{' '}
