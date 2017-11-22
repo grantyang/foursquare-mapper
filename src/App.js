@@ -3,6 +3,7 @@ import Input from './presentational/input.js';
 import GoogleMap from './presentational/google_map.js';
 import Sidebar from './presentational/sidebar.js';
 import ItemsList from './presentational/items_list.js';
+import Options from './presentational/options.js';
 
 class App extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ class App extends Component {
       query: '',
       section: '',
       limit: 50,
+      minimumRating: 0,
       items: [],
       keywords: [],
       savedVenues: {},
@@ -32,7 +34,6 @@ class App extends Component {
     this.setState({
       loading: true
     });
-
     fetch(
       `http://localhost:5000/fsquare/explore?query=${this.state.query}&ll=${
         this.state.latitude
@@ -46,15 +47,18 @@ class App extends Component {
         const fetchedVenues = data.response.groups[0].items;
         let venueDataToAdd = {};
         fetchedVenues.forEach(v => {
-          venueDataToAdd[v.venue.id] = {
-            name: v.venue.name,
-            rating: v.venue.rating,
-            cat: v.venue.categories[0] && v.venue.categories[0].shortName,
-            lat: v.venue.location.lat,
-            lng: v.venue.location.lng,
-            keyword: this.state.query
-          };
+          if (v.venue.rating > this.state.minimumRating) {
+            venueDataToAdd[v.venue.id] = {
+              name: v.venue.name,
+              rating: v.venue.rating,
+              cat: v.venue.categories[0] && v.venue.categories[0].shortName,
+              lat: v.venue.location.lat,
+              lng: v.venue.location.lng,
+              keyword: this.state.query
+            };
+          }
         });
+        console.log(venueDataToAdd);
         this.setState({
           items: fetchedVenues,
           loading: false,
@@ -104,10 +108,15 @@ class App extends Component {
     });
   };
 
+  onMinimumRatingChange = event => {
+    this.setState({ minimumRating: event.target.value });
+  };
+
   render() {
     return (
       <div className="container mt-2">
         <Input fxToRun={this.addNewKeyword} />
+        <Options onMinimumRatingChange={this.onMinimumRatingChange} />
         <div className="row mt-2 justify-content-sm-center">
           <Sidebar
             keywords={this.state.keywords}
@@ -120,7 +129,6 @@ class App extends Component {
           />
         </div>
         <ItemsList loading={this.state.loading} items={this.state.items} />
-
       </div>
     );
   }
