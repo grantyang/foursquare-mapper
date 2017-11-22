@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Input from './presentational/input.js';
 import GoogleMap from './presentational/google_map.js';
 import Sidebar from './presentational/sidebar.js';
+import ItemsList from './presentational/items_list.js';
 
 class App extends Component {
   constructor(props) {
@@ -118,25 +119,8 @@ class App extends Component {
             savedVenues={this.state.savedVenues}
           />
         </div>
+        <ItemsList loading={this.state.loading} items={this.state.items} />
 
-        {this.state.loading && <span className="col-9">Fetching Data...</span>}
-        {!this.state.loading && (
-          <div className="col-9">
-            <div className="">Items:</div>
-
-            {this.state.items.map(item => {
-              return (
-                <div className="" key={item.venue.id}>
-                  {item.venue.name} |{' '}
-                  {item.venue.categories[0] &&
-                    item.venue.categories[0].shortName}{' '}
-                  | {item.venue.rating} | {item.venue.stats.checkinsCount} |{' '}
-                  {item.venue.location.lat} | {item.venue.location.lng}
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
     );
   }
