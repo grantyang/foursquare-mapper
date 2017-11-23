@@ -56,6 +56,7 @@ class GoogleMap extends Component {
 
   componentDidUpdate(previousProps, previousState) {
     if (previousState.heatmap === this.state.heatmap) {
+
       this.state.heatmap.setMap(null);
       let heatmap = new google.maps.visualization.HeatmapLayer({
         data: this.getPoints()

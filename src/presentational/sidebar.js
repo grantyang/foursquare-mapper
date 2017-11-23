@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Sidebar = props => {
   return (
     <div className="col-2">
       <div className="">Keywords:</div>
-      {props.keywords.map(keyword => {
+      {Object.keys(props.keywords).map(keyword => {
         return (
           <div key={keyword} onClick={() => props.removeKeyword(keyword)}>
-            {keyword}
+            {keyword} above {props.keywords[keyword].minimumRating}
           </div>
         );
       })}

@@ -14,7 +14,7 @@ class App extends Component {
       limit: 50,
       minimumRating: 0,
       items: [],
-      keywords: [],
+      savedKeywords: {},
       savedVenues: {},
       latitude: 25.042921,
       longitude: 121.534717
@@ -69,24 +69,33 @@ class App extends Component {
   addNewKeyword = keywordInput => {
     //saves a keyword to sidebar list of previous searches
     if (keywordInput === '') return alert('Please input value');
+    if (this.state.savedKeywords[keywordInput])
+      return alert('Keyword already added');
+    const keywordToAdd = {};
+    keywordToAdd[keywordInput] = { minimumRating: this.state.minimumRating };
+
     this.setState({
       query: keywordInput,
-      keywords: [keywordInput, ...this.state.keywords]
+      savedKeywords: Object.assign({}, this.state.savedKeywords, keywordToAdd)
     });
   };
 
   removeKeyword = keywordToRemove => {
     //when a keyword is clicked, remove it from keywords list and its results from the heatmap
     const savedVenues = this.state.savedVenues;
-    const newKeywords = this.state.keywords.filter(k => k !== keywordToRemove);
-    let res = Object.assign({}, savedVenues);
-    Object.keys(res).forEach(id => {
-      if (res[id].keyword === keywordToRemove) delete res[id];
+    const savedKeywords = this.state.savedKeywords;
+
+    let newKeywords = Object.assign({}, savedKeywords);
+    delete newKeywords[keywordToRemove];
+
+    let newVenues = Object.assign({}, savedVenues);
+    Object.keys(newVenues).forEach(id => {
+      if (newVenues[id].keyword === keywordToRemove) delete newVenues[id];
     });
 
     this.setState({
-      keywords: newKeywords,
-      savedVenues: res,
+      savedKeywords: newKeywords,
+      savedVenues: newVenues,
       query: ''
     });
   };
@@ -102,13 +111,13 @@ class App extends Component {
   clearData = () => {
     this.setState({
       query: '',
-      keywords: [],
+      savedKeywords: {},
       savedVenues: {}
     });
   };
 
   onMinimumRatingChange = event => {
-    this.setState({ minimumRating: event.target.value });
+    this.setState({ minimumRating: parseFloat(event.target.value) });
   };
 
   render() {
@@ -118,7 +127,7 @@ class App extends Component {
         <Options onMinimumRatingChange={this.onMinimumRatingChange} />
         <div className="row mt-2 justify-content-sm-center">
           <Sidebar
-            keywords={this.state.keywords}
+            keywords={this.state.savedKeywords}
             removeKeyword={this.removeKeyword}
           />
           <GoogleMap
