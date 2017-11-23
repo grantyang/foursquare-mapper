@@ -11,14 +11,13 @@ class App extends Component {
     this.state = {
       loading: false,
       query: '',
-      section: '',
       limit: 50,
       minimumRating: 0,
       items: [],
       keywords: [],
       savedVenues: {},
-      latitude: 25.033,
-      longitude: 121.5654
+      latitude: 25.042921,
+      longitude: 121.534717
     };
   }
 
@@ -47,7 +46,7 @@ class App extends Component {
         const fetchedVenues = data.response.groups[0].items;
         let venueDataToAdd = {};
         fetchedVenues.forEach(v => {
-          if (v.venue.rating > this.state.minimumRating) {
+          if (v.venue.rating >= this.state.minimumRating) {
             venueDataToAdd[v.venue.id] = {
               name: v.venue.name,
               rating: v.venue.rating,

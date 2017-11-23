@@ -32,21 +32,20 @@ class GoogleMap extends Component {
         return;
       }
 
-      var bounds = new google.maps.LatLngBounds();
-
       //send location to parent component to save
       saveLocation(places[0].geometry.location);
       if (!places[0].geometry) {
         console.log('Returned place contains no geometry');
         return;
       }
+
+      var bounds = new google.maps.LatLngBounds();
       if (places[0].geometry.viewport) {
         // Only geocodes have viewport.
         bounds.union(places[0].geometry.viewport);
       } else {
         bounds.extend(places[0].geometry.location);
       }
-
       map.fitBounds(bounds);
     });
     this.setState({
@@ -62,7 +61,6 @@ class GoogleMap extends Component {
       });
       heatmap.set('radius', 30);
       heatmap.setMap(this.state.map);
-
       this.setState({
         heatmap
       });
@@ -82,6 +80,10 @@ class GoogleMap extends Component {
     }
   };
 
+  toggleHeatmap = () => {
+    this.state.heatmap.setMap(this.state.heatmap.getMap() ? null : this.state.map);
+  };
+
   render() {
     // this.refs.map is a direct reference to this element
     return (
@@ -95,6 +97,12 @@ class GoogleMap extends Component {
           />
         </div>
         <div className="map rounded" ref="map" />
+        <button className="btn btn-warning mr-1" onClick={this.toggleIcons}>
+          Toggle Icons
+        </button>
+        <button className="btn btn-info" onClick={this.toggleHeatmap}>
+          Toggle Heatmap
+        </button>
       </div>
     );
   }
