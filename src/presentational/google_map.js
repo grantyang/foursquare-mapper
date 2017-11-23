@@ -6,7 +6,8 @@ class GoogleMap extends Component {
     super(props);
     this.state = {
       map: null,
-      heatmap: new google.maps.visualization.HeatmapLayer()
+      heatmap: new google.maps.visualization.HeatmapLayer(),
+      heatmapHidden: false
     };
   }
 
@@ -60,7 +61,9 @@ class GoogleMap extends Component {
         data: this.getPoints()
       });
       heatmap.set('radius', 30);
-      heatmap.setMap(this.state.map);
+      if (!this.state.heatmapHidden) {
+        heatmap.setMap(this.state.map);
+      }
       this.setState({
         heatmap
       });
@@ -81,7 +84,12 @@ class GoogleMap extends Component {
   };
 
   toggleHeatmap = () => {
-    this.state.heatmap.setMap(this.state.heatmap.getMap() ? null : this.state.map);
+    this.state.heatmap.setMap(
+      this.state.heatmap.getMap() ? null : this.state.map
+    );
+    this.setState({
+      heatmapHidden: !this.state.heatmapHidden
+    });
   };
 
   render() {
