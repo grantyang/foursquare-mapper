@@ -57,11 +57,30 @@ class App extends Component {
             };
           }
         });
-        console.log(venueDataToAdd);
+
+        // update keyword object with number of results returned
+        const keywordToUpdate = {};
+        keywordToUpdate[this.state.query] = Object.assign(
+          {},
+          this.state.savedKeywords[this.state.query],
+          {
+            resultsLength: Object.keys(venueDataToAdd).length
+          }
+        );
+
         this.setState({
           items: fetchedVenues,
           loading: false,
-          savedVenues: Object.assign({}, this.state.savedVenues, venueDataToAdd)
+          savedVenues: Object.assign(
+            {},
+            this.state.savedVenues,
+            venueDataToAdd
+          ),
+          savedKeywords: Object.assign(
+            {},
+            this.state.savedKeywords,
+            keywordToUpdate
+          )
         });
       });
   };

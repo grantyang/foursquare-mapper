@@ -5,11 +5,15 @@ const Sidebar = props => {
     <div className="col-2">
       <div className="">Keywords:</div>
       {Object.keys(props.keywords).map(keyword => {
-        return (
-          <div key={keyword} onClick={() => props.removeKeyword(keyword)}>
-            {keyword} above {props.keywords[keyword].minimumRating}
-          </div>
-        );
+        if (props.keywords[keyword].resultsLength) {
+          return (
+            <div key={keyword} onClick={() => props.removeKeyword(keyword)}>
+              {props.keywords[keyword].resultsLength} results for {keyword}{' '}
+              above {props.keywords[keyword].minimumRating}
+            </div>
+          );
+        }
+        return <div key={keyword}>Loading...</div>;
       })}
     </div>
   );
