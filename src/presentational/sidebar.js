@@ -5,7 +5,6 @@ const Sidebar = props => {
     <div className="col-3">
       <div className="">Keywords:</div>
       {Object.keys(props.keywords).map(keyword => {
-        console.log(props.keywords[keyword].resultsLength)
         if (props.keywords[keyword].resultsLength !== undefined) {
           return (
             <div key={keyword} onClick={() => props.removeKeyword(keyword)}>

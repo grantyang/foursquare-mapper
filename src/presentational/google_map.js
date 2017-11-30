@@ -6,6 +6,7 @@ class GoogleMap extends Component {
     super(props);
     this.state = {
       map: null,
+      markerArray: [],
       heatmap: new google.maps.visualization.HeatmapLayer(),
       heatmapHidden: false
     };
@@ -56,12 +57,29 @@ class GoogleMap extends Component {
 
   componentDidUpdate(previousProps, previousState) {
     if (previousState.heatmap === this.state.heatmap) {
-      console.log('update')
+      const savedPointLatLngs = this.getPoints();
+      const markerArray = [];
+
+      //clear previous markers
+      this.state.markerArray.forEach(marker => {
+        marker.setMap(null);
+      })
+
+      //create markers for each saved point
+      savedPointLatLngs.forEach(point => {
+        const marker = new google.maps.Marker({
+          position: point,
+          map: this.state.map,
+          title: 'Hello World!'
+        });
+        markerArray.push(marker)
+      })
+
       //clear previous heatmap
       this.state.heatmap.setMap(null);
       //create new heatmap with upated points
-      let heatmap = new google.maps.visualization.HeatmapLayer({
-        data: this.getPoints()
+      const heatmap = new google.maps.visualization.HeatmapLayer({
+        data: savedPointLatLngs
       });
       heatmap.set('radius', 30);
 
@@ -70,6 +88,7 @@ class GoogleMap extends Component {
         heatmap.setMap(this.state.map);
       }
       this.setState({
+        markerArray,
         heatmap
       });
     }
