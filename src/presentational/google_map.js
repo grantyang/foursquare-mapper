@@ -8,7 +8,8 @@ class GoogleMap extends Component {
       map: null,
       markerArray: [],
       heatmap: new google.maps.visualization.HeatmapLayer(),
-      heatmapHidden: false
+      heatmapHidden: false,
+      iconsHidden: false
     };
   }
 
@@ -63,17 +64,16 @@ class GoogleMap extends Component {
       //clear previous markers
       this.state.markerArray.forEach(marker => {
         marker.setMap(null);
-      })
+      });
 
       //create markers for each saved point
       savedPointLatLngs.forEach(point => {
         const marker = new google.maps.Marker({
           position: point,
-          map: this.state.map,
           title: 'Hello World!'
         });
-        markerArray.push(marker)
-      })
+        markerArray.push(marker);
+      });
 
       //clear previous heatmap
       this.state.heatmap.setMap(null);
@@ -86,6 +86,11 @@ class GoogleMap extends Component {
       //if heatmap is not toggled off, overlay the heatmap onto map
       if (!this.state.heatmapHidden) {
         heatmap.setMap(this.state.map);
+      }
+      if (!this.state.iconsHidden) {
+        markerArray.forEach(marker =>{
+          marker.setMap(this.state.map);
+        }) 
       }
       this.setState({
         markerArray,
@@ -113,6 +118,16 @@ class GoogleMap extends Component {
     );
     this.setState({
       heatmapHidden: !this.state.heatmapHidden
+    });
+  };
+
+  toggleIcons = () => {
+    this.state.markerArray.forEach(marker => {
+      marker.setMap(marker.getMap() ? null : this.state.map);
+    });
+
+    this.setState({
+      iconsHidden: !this.state.iconsHidden
     });
   };
 
