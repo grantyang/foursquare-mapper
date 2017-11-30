@@ -56,12 +56,16 @@ class GoogleMap extends Component {
 
   componentDidUpdate(previousProps, previousState) {
     if (previousState.heatmap === this.state.heatmap) {
-
+      console.log('update')
+      //clear previous heatmap
       this.state.heatmap.setMap(null);
+      //create new heatmap with upated points
       let heatmap = new google.maps.visualization.HeatmapLayer({
         data: this.getPoints()
       });
       heatmap.set('radius', 30);
+
+      //if heatmap is not toggled off, overlay the heatmap onto map
       if (!this.state.heatmapHidden) {
         heatmap.setMap(this.state.map);
       }

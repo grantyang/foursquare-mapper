@@ -2,10 +2,11 @@ import React from 'react';
 
 const Sidebar = props => {
   return (
-    <div className="col-2">
+    <div className="col-3">
       <div className="">Keywords:</div>
       {Object.keys(props.keywords).map(keyword => {
-        if (props.keywords[keyword].resultsLength) {
+        console.log(props.keywords[keyword].resultsLength)
+        if (props.keywords[keyword].resultsLength !== undefined) {
           return (
             <div key={keyword} onClick={() => props.removeKeyword(keyword)}>
               {props.keywords[keyword].resultsLength} results for {keyword}{' '}
