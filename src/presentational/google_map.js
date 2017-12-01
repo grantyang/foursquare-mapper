@@ -82,6 +82,23 @@ class GoogleMap extends Component {
         data: savedPointLatLngs
       });
       heatmap.set('radius', 30);
+      var gradient = [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+      ]
+      heatmap.set('gradient', gradient);
 
       //if heatmap is not toggled off, overlay the heatmap onto map
       if (!this.state.heatmapHidden) {
@@ -144,10 +161,10 @@ class GoogleMap extends Component {
           />
         </div>
         <div className="map rounded" ref="map" />
-        <button className="btn btn-warning mr-1" onClick={this.toggleIcons}>
+        <button className="btn btn-warning mt-1 mr-1" onClick={this.toggleIcons}>
           Toggle Icons
         </button>
-        <button className="btn btn-info" onClick={this.toggleHeatmap}>
+        <button className="btn btn-info mt-1" onClick={this.toggleHeatmap}>
           Toggle Heatmap
         </button>
       </div>
