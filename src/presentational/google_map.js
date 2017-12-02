@@ -66,11 +66,54 @@ class GoogleMap extends Component {
         marker.setMap(null);
       });
 
+      const iconBase =
+        'https://emojipedia-us.s3.amazonaws.com/thumbs/240/apple/114/';
+      const icons = {
+        Sushi: {
+          icon: iconBase + 'sushi_1f363.png'
+        },
+        Japanese: {
+          icon: iconBase + 'sushi_1f363.png'
+        },
+        Ramen: {
+          icon: iconBase + 'steaming-bowl_1f35c.png'
+        },
+        Noodles: {
+          icon: iconBase + 'steaming-bowl_1f35c.png'
+        },
+        Bar: {
+          icon: iconBase + 'beer-mug_1f37a.png'
+        },
+        'Beer Garden': {
+          icon: iconBase + 'beer-mug_1f37a.png'
+        },
+        Pub: {
+          icon: iconBase + 'beer-mug_1f37a.png'
+        },
+        Brewery: {
+          icon: iconBase + 'beer-mug_1f37a.png'
+        }
+      };
+
       //create markers for each saved point
-      savedPointLatLngs.forEach(point => {
+      const savedVenues = this.props.savedVenues;
+      Object.keys(savedVenues).map(keyName => {
+        const image = {
+          url:
+            !icons[savedVenues[keyName].cat] ||
+            icons[savedVenues[keyName].cat].icon, //temp
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(10, 10),
+          scaledSize: new google.maps.Size(20, 20)
+        };
+
         const marker = new google.maps.Marker({
-          position: point,
-          title: 'Hello World!'
+          position: new google.maps.LatLng(
+            savedVenues[keyName].lat,
+            savedVenues[keyName].lng
+          ),
+          icon: image,
+          title: savedVenues[keyName].name
         });
         markerArray.push(marker);
       });
@@ -97,7 +140,7 @@ class GoogleMap extends Component {
         'rgba(127, 0, 63, 1)',
         'rgba(191, 0, 31, 1)',
         'rgba(255, 0, 0, 1)'
-      ]
+      ];
       heatmap.set('gradient', gradient);
 
       //if heatmap is not toggled off, overlay the heatmap onto map
@@ -105,9 +148,9 @@ class GoogleMap extends Component {
         heatmap.setMap(this.state.map);
       }
       if (!this.state.iconsHidden) {
-        markerArray.forEach(marker =>{
+        markerArray.forEach(marker => {
           marker.setMap(this.state.map);
-        }) 
+        });
       }
       this.setState({
         markerArray,
@@ -119,6 +162,8 @@ class GoogleMap extends Component {
   // Heatmap data
   getPoints = () => {
     const savedVenues = this.props.savedVenues;
+    console.log(savedVenues);
+
     if (savedVenues) {
       return Object.keys(savedVenues).map(keyName => {
         return new google.maps.LatLng(
@@ -161,7 +206,9 @@ class GoogleMap extends Component {
           />
         </div>
         <div className="map rounded" ref="map" />
-        <button className="btn btn-warning mt-1 mr-1" onClick={this.toggleIcons}>
+        <button
+          className="btn btn-warning mt-1 mr-1"
+          onClick={this.toggleIcons}>
           Toggle Icons
         </button>
         <button className="btn btn-info mt-1" onClick={this.toggleHeatmap}>
