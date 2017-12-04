@@ -225,6 +225,9 @@ const icons = {
   Museum: {
     icon: iconBase + '118/classical-building_1f3db.png'
   },
+  Temple: {
+    icon: iconBase + '118/classical-building_1f3db.png'
+  },
   'Historic Site': {
     icon: iconBase + '118/statue-of-liberty_1f5fd.png'
   },

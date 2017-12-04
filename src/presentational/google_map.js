@@ -67,7 +67,6 @@ class GoogleMap extends Component {
         marker.setMap(null);
       });
 
-      
       //create markers for each saved point
       const savedVenues = this.props.savedVenues;
       Object.keys(savedVenues).map(keyName => {
@@ -94,10 +93,11 @@ class GoogleMap extends Component {
       //clear previous heatmap
       this.state.heatmap.setMap(null);
       //create new heatmap with upated points
+      console.log(savedPointLatLngs)
       const heatmap = new google.maps.visualization.HeatmapLayer({
         data: savedPointLatLngs
       });
-      heatmap.set('radius', 30);
+      heatmap.set('radius', 40);
       var gradient = [
         'rgba(0, 255, 255, 0)',
         'rgba(0, 255, 255, 1)',
@@ -136,13 +136,16 @@ class GoogleMap extends Component {
   getPoints = () => {
     const savedVenues = this.props.savedVenues;
     console.log(savedVenues);
-
+    // {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
     if (savedVenues) {
       return Object.keys(savedVenues).map(keyName => {
-        return new google.maps.LatLng(
-          savedVenues[keyName].lat,
-          savedVenues[keyName].lng
-        );
+        return {
+          location: new google.maps.LatLng(
+            savedVenues[keyName].lat,
+            savedVenues[keyName].lng
+          ),
+          weight: savedVenues[keyName].rating / 3
+        };
       });
     }
   };
