@@ -201,6 +201,9 @@ class GoogleMap extends Component {
         'Dive Bar': {
           icon: iconBase + '114/beer-mug_1f37a.png'
         },
+        'Sports Bar': {
+          icon: iconBase + '114/beer-mug_1f37a.png'
+        },
         'Hotel Bar': {
           icon: iconBase + '114/beer-mug_1f37a.png'
         },
@@ -288,6 +291,21 @@ class GoogleMap extends Component {
         'Record Shop': {
           icon: iconBase + '118/musical-note_1f3b5.png'
         },
+        'Gym / Fitness': {
+          icon: iconBase + '118/weight-lifter_1f3cb.png'
+        },
+        'Climbing Gym': {
+          icon: iconBase + '118/weight-lifter_1f3cb.png'
+        },
+        Gym: {
+          icon: iconBase + '118/weight-lifter_1f3cb.png'
+        },
+        'Dance Studio': {
+          icon: iconBase + '118/weight-lifter_1f3cb.png'
+        },
+        'Yoga Studio': {
+          icon: iconBase + '118/weight-lifter_1f3cb.png'
+        },
         'Grocery Store': {
           icon: iconBase + '118/shopping-trolley_1f6d2.png'
         },
@@ -296,6 +314,18 @@ class GoogleMap extends Component {
         },
         Market: {
           icon: iconBase + '118/shopping-trolley_1f6d2.png'
+        },
+        School: {
+          icon: iconBase + '118/classical-building_1f3db.png'
+        },
+        University: {
+          icon: iconBase + '118/classical-building_1f3db.png'
+        },
+        'Elementary School': {
+          icon: iconBase + '118/classical-building_1f3db.png'
+        },
+        'High School': {
+          icon: iconBase + '118/classical-building_1f3db.png'
         }
       };
       //create markers for each saved point
