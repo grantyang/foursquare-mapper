@@ -1,4 +1,5 @@
 import React from 'react';
+import xicon from '../resources/x.svg'; // relative path to image
 
 const Sidebar = props => {
   return (
@@ -8,6 +9,7 @@ const Sidebar = props => {
         if (props.keywords[keyword].resultsLength !== undefined) {
           return (
             <div key={keyword} onClick={() => props.removeKeyword(keyword)}>
+              <img src={xicon} alt="remove keyword" />{' '}
               {props.keywords[keyword].resultsLength} results for {keyword}{' '}
               above {props.keywords[keyword].minimumRating}
             </div>

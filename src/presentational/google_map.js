@@ -58,6 +58,7 @@ class GoogleMap extends Component {
   }
 
   componentDidUpdate(previousProps, previousState) {
+    //only update if heatmap was not just updated
     if (previousState.heatmap === this.state.heatmap) {
       const savedPointLatLngs = this.getPoints();
       const markerArray = [];
@@ -67,9 +68,11 @@ class GoogleMap extends Component {
         marker.setMap(null);
       });
 
-      //create markers for each saved point
+
+      //create markers for each saved point and save them to markerArray
       const savedVenues = this.props.savedVenues;
       Object.keys(savedVenues).map(keyName => {
+        //create icon emoji for each marker
         const image = {
           url:
             !icons[savedVenues[keyName].cat] ||
@@ -92,8 +95,9 @@ class GoogleMap extends Component {
 
       //clear previous heatmap
       this.state.heatmap.setMap(null);
-      //create new heatmap with upated points
-      console.log(savedPointLatLngs)
+
+      //create new heatmap with updated points
+      console.log(savedPointLatLngs);
       const heatmap = new google.maps.visualization.HeatmapLayer({
         data: savedPointLatLngs
       });
@@ -120,11 +124,15 @@ class GoogleMap extends Component {
       if (!this.state.heatmapHidden) {
         heatmap.setMap(this.state.map);
       }
+
+      //if markers are not toggled off, overlay the markers onto map
       if (!this.state.iconsHidden) {
         markerArray.forEach(marker => {
           marker.setMap(this.state.map);
         });
       }
+
+      //set the new array of markers and new heatmap to local state
       this.setState({
         markerArray,
         heatmap
@@ -136,7 +144,6 @@ class GoogleMap extends Component {
   getPoints = () => {
     const savedVenues = this.props.savedVenues;
     console.log(savedVenues);
-    // {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
     if (savedVenues) {
       return Object.keys(savedVenues).map(keyName => {
         return {
@@ -144,12 +151,25 @@ class GoogleMap extends Component {
             savedVenues[keyName].lat,
             savedVenues[keyName].lng
           ),
-          weight: savedVenues[keyName].rating / 3
+          weight: this.weightByRating(keyName)
         };
       });
     }
   };
 
+  // Assigns proper weight to heatmap radius based on rating of venue
+  weightByRating = keyName => {
+    const rating = this.props.savedVenues[keyName].rating;
+    if (rating > 9) {
+      return 3;
+    } else if (rating > 8) {
+      return 2;
+    } else if (rating > 7) {
+      return 1;
+    } else return 0.5;
+  };
+
+  //toggles heatmap
   toggleHeatmap = () => {
     this.state.heatmap.setMap(
       this.state.heatmap.getMap() ? null : this.state.map
@@ -159,11 +179,11 @@ class GoogleMap extends Component {
     });
   };
 
+  //toggles emoji icons
   toggleIcons = () => {
     this.state.markerArray.forEach(marker => {
       marker.setMap(marker.getMap() ? null : this.state.map);
     });
-
     this.setState({
       iconsHidden: !this.state.iconsHidden
     });
