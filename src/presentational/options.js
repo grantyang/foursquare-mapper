@@ -14,7 +14,11 @@ const Options = props => {
         <option value="7.5">7.5/10</option>
         <option value="7">7.0/10</option>
       </select>
-
+      <button
+          className="btn btn-warning mr-1"
+          onClick={props.clearData()}>
+          Clear Keywords
+        </button>
     </div>
   );
 };

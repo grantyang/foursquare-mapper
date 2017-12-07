@@ -143,7 +143,8 @@ class App extends Component {
     return (
       <div className="container mt-2">
         <Input fxToRun={this.addNewKeyword} />
-        <Options onMinimumRatingChange={this.onMinimumRatingChange} />
+        <Options onMinimumRatingChange={this.onMinimumRatingChange}
+        clearData={this.clearData} />
         <div className="row mt-2 justify-content-sm-center">
           <Sidebar
             keywords={this.state.savedKeywords}
