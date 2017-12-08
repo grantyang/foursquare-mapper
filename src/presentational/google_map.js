@@ -68,20 +68,21 @@ class GoogleMap extends Component {
         marker.setMap(null);
       });
 
-
       //create markers for each saved point and save them to markerArray
       const savedVenues = this.props.savedVenues;
       Object.keys(savedVenues).map(keyName => {
-        //create icon emoji for each marker
-        const image = {
-          url:
-            !icons[savedVenues[keyName].cat] ||
-            icons[savedVenues[keyName].cat].icon, //temp
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(10, 10),
-          scaledSize: new google.maps.Size(20, 20)
-        };
+        let image = null;
+        //if there is an emoji icon associated with venue category, generate emoji icon for marker
+        if (icons[savedVenues[keyName].cat]) {
+          image = {
+            url: icons[savedVenues[keyName].cat].icon, //temp
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(20, 20)
+          };
+        }
 
+        //create marker with lat lng, name, and potentially emoji of each venue
         const marker = new google.maps.Marker({
           position: new google.maps.LatLng(
             savedVenues[keyName].lat,

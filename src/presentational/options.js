@@ -16,7 +16,7 @@ const Options = props => {
       </select>
       <button
           className="btn btn-warning mr-1"
-          onClick={props.clearData()}>
+          onClick={props.clearData}>
           Clear Keywords
         </button>
     </div>
