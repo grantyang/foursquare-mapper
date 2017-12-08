@@ -47,12 +47,15 @@ class App extends Component {
         let venueDataToAdd = {};
         fetchedVenues.forEach(v => {
           if (v.venue.rating >= this.state.minimumRating) {
+            console.log(v.venue)
             venueDataToAdd[v.venue.id] = {
               name: v.venue.name,
               rating: v.venue.rating,
               cat: v.venue.categories[0] && v.venue.categories[0].shortName,
               lat: v.venue.location.lat,
               lng: v.venue.location.lng,
+              phone: v.venue.contact.formattedPhone,
+              url: v.venue.url,
               keyword: this.state.query
             };
           }

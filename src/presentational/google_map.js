@@ -75,12 +75,31 @@ class GoogleMap extends Component {
         //if there is an emoji icon associated with venue category, generate emoji icon for marker
         if (icons[savedVenues[keyName].cat]) {
           image = {
-            url: icons[savedVenues[keyName].cat].icon, //temp
+            url: icons[savedVenues[keyName].cat].icon,
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(10, 10),
             scaledSize: new google.maps.Size(20, 20)
           };
         }
+
+        var contentString = `<h5>${savedVenues[keyName].name}</h5>
+            <b>Rating: ${savedVenues[keyName].rating}</b>
+            <p>Category: ${savedVenues[keyName].cat}</p>
+            ${
+              savedVenues[keyName].phone
+                ? `<p>Phone: ${savedVenues[keyName].phone}</p>`
+                : ``
+            }
+            ${
+              savedVenues[keyName].url
+                ? `<a href="${savedVenues[keyName].url}">
+            ${savedVenues[keyName].url}</a>`
+                : ``
+            }`;
+
+        var venueInfoWindow = new google.maps.InfoWindow({
+          content: contentString
+        });
 
         //create marker with lat lng, name, and potentially emoji of each venue
         const marker = new google.maps.Marker({
@@ -90,6 +109,9 @@ class GoogleMap extends Component {
           ),
           icon: image,
           title: savedVenues[keyName].name
+        });
+        marker.addListener('click', () => {
+          venueInfoWindow.open(this.state.map, marker);
         });
         markerArray.push(marker);
       });
