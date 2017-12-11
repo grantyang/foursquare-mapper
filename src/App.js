@@ -47,7 +47,6 @@ class App extends Component {
         let venueDataToAdd = {};
         fetchedVenues.forEach(v => {
           if (v.venue.rating >= this.state.minimumRating) {
-            console.log(v.venue)
             venueDataToAdd[v.venue.id] = {
               name: v.venue.name,
               rating: v.venue.rating,
@@ -91,13 +90,13 @@ class App extends Component {
   addNewKeyword = keywordInput => {
     //saves a keyword to sidebar list of previous searches
     if (keywordInput === '') return alert('Please input value');
-    if (this.state.savedKeywords[keywordInput])
+    if (this.state.savedKeywords[keywordInput.toLowerCase()])
       return alert('Keyword already added');
     const keywordToAdd = {};
-    keywordToAdd[keywordInput] = { minimumRating: this.state.minimumRating };
+    keywordToAdd[keywordInput.toLowerCase()] = { minimumRating: this.state.minimumRating };
 
     this.setState({
-      query: keywordInput,
+      query: keywordInput.toLowerCase(),
       savedKeywords: Object.assign({}, this.state.savedKeywords, keywordToAdd)
     });
   };

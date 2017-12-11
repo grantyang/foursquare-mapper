@@ -78,10 +78,11 @@ class GoogleMap extends Component {
             url: icons[savedVenues[keyName].cat].icon,
             origin: new google.maps.Point(0, 0),
             anchor: new google.maps.Point(10, 10),
-            scaledSize: new google.maps.Size(20, 20)
+            scaledSize: new google.maps.Size(24, 24)
           };
         }
 
+        //format of info window
         var contentString = `<h5>${savedVenues[keyName].name}</h5>
             <b>Rating: ${savedVenues[keyName].rating}</b>
             <p>Category: ${savedVenues[keyName].cat}</p>
@@ -97,7 +98,7 @@ class GoogleMap extends Component {
                 : ``
             }`;
 
-        var venueInfoWindow = new google.maps.InfoWindow({
+        let venueInfoWindow = new google.maps.InfoWindow({
           content: contentString
         });
 
@@ -120,7 +121,6 @@ class GoogleMap extends Component {
       this.state.heatmap.setMap(null);
 
       //create new heatmap with updated points
-      console.log(savedPointLatLngs);
       const heatmap = new google.maps.visualization.HeatmapLayer({
         data: savedPointLatLngs
       });
@@ -166,7 +166,6 @@ class GoogleMap extends Component {
   // Heatmap data
   getPoints = () => {
     const savedVenues = this.props.savedVenues;
-    console.log(savedVenues);
     if (savedVenues) {
       return Object.keys(savedVenues).map(keyName => {
         return {
